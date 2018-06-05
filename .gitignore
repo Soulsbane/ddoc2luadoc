@@ -1,0 +1,6 @@
+ddoc2luadoc
+.dub
+docs.json
+__dummy.html
+*.o
+*.obj
