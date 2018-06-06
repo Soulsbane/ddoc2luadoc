@@ -2,3 +2,5 @@ name "ddoc2luadoc"
 description "Project Description."
 copyright "Copyright © 2018"
 authors "Paul Crane"
+
+dependency "dstringutils" version="*"
