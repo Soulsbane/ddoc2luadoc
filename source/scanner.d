@@ -21,6 +21,49 @@ bool isHiddenFileOrDir(DirEntry entry)
 	return false;
 }
 
+enum MultiLineCommentType
+{
+	None,
+	Open,
+	Close,
+	OpenAndClose
+}
+
+MultiLineCommentType isMultiLineComment(const string line)
+{
+	immutable string commentOpen = "/*";
+	immutable string commentClose = "*/";
+
+	if(line.startsWith(commentOpen) && line.canFind(commentClose))
+	{
+		return MultiLineCommentType.OpenAndClose;
+	}
+
+	if(line.startsWith(commentOpen))
+	{
+		return MultiLineCommentType.Open;
+	}
+
+	if(line.canFind(commentClose))
+	{
+		return MultiLineCommentType.Close;
+	}
+
+	return MultiLineCommentType.None;
+}
+
+bool isSingleLineComment(const string line)
+{
+	immutable string singleLineComment = "//";
+
+	if(line.startsWith(singleLineComment))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 struct Scanner
 {
 	void scanFile(const DirEntry entry)
@@ -32,6 +75,43 @@ struct Scanner
 			immutable string name = buildNormalizedPath(entry.name);
 			immutable string text = readText(name).ifThrown!UTFException("");
 			immutable auto lines = text.lineSplitter().array;
+			//lines.each!writeln;
+
+			bool inCommentBlock;
+
+			foreach(rawLine; lines)
+			{
+				immutable string line = rawLine.strip.chompPrefix("\t");
+
+				if(!line.empty)
+				{
+					if(isSingleLineComment(line))
+					{
+					}
+					else if(auto commentType = isMultiLineComment(line))
+					{
+						if(commentType == MultiLineCommentType.Open)
+						{
+							inCommentBlock = true;
+						}
+
+						if(commentType == MultiLineCommentType.Close)
+						{
+							inCommentBlock = false;
+						}
+
+						if(commentType == MultiLineCommentType.OpenAndClose)
+						{
+						}
+					}
+					else if(inCommentBlock)
+					{
+					}
+					else
+					{
+					}
+				}
+			}
 		}
 
 	}
