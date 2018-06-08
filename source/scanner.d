@@ -112,8 +112,7 @@ struct Scanner
 
 	void scanFiles()
 	{
-		getcwd.dirEntries(SpanMode.depth)
-			.filter!(a => (!isHiddenFileOrDir(a) && a.isFile))
+		getcwd.dirEntries("*.d", SpanMode.depth)
 			.each!(entry => scanFile(entry));
 	}
 }
