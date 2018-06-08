@@ -44,28 +44,21 @@ MultiLineCommentType isMultiLineComment(const string line)
 		return MultiLineCommentType.Open;
 	}
 
-	if(line.canFind(commentClose))
+	if(line.startsWith(commentClose))
 	{
 		return MultiLineCommentType.Close;
 	}
 
 	return MultiLineCommentType.None;
 }
-
-bool isSingleLineComment(const string line)
-{
-	immutable string singleLineComment = "//";
-
-	if(line.startsWith(singleLineComment))
-	{
-		return true;
-	}
-
-	return false;
-}
-
+/**
+	Creates a todo file using the fileExt parameter in the filename.
+	@param fileExt The file extension to use for the todo file.
+	@return A file handle to the created todo file and the constructed todo filename string.
+*/
 struct Scanner
 {
+	void parseLine(const string line){}
 	void scanFile(const DirEntry entry)
 	{
 		immutable string fileExtension = entry.name.baseName.extension.removeChars(".");
@@ -75,7 +68,7 @@ struct Scanner
 			immutable string name = buildNormalizedPath(entry.name);
 			immutable string text = readText(name).ifThrown!UTFException("");
 			immutable auto lines = text.lineSplitter().array;
-			//lines.each!writeln;
+			auto output = appender!string;
 
 			bool inCommentBlock;
 
@@ -85,18 +78,17 @@ struct Scanner
 
 				if(!line.empty)
 				{
-					if(isSingleLineComment(line))
-					{
-					}
-					else if(auto commentType = isMultiLineComment(line))
+					if(auto commentType = isMultiLineComment(line))
 					{
 						if(commentType == MultiLineCommentType.Open)
 						{
+							output.put("--[[--\n");
 							inCommentBlock = true;
 						}
 
 						if(commentType == MultiLineCommentType.Close)
 						{
+							output.put("--]]\n");
 							inCommentBlock = false;
 						}
 
@@ -106,12 +98,14 @@ struct Scanner
 					}
 					else if(inCommentBlock)
 					{
+						parseLine(line);
 					}
 					else
 					{
 					}
 				}
 			}
+			writeln(output.data);
 		}
 
 	}
