@@ -6,21 +6,6 @@ import std.utf, std.stdio, std.string;
 
 import dstringutils;
 
-bool isHiddenFileOrDir(DirEntry entry)
-{
-	auto dirParts = entry.name.pathSplitter;
-
-	foreach(dirPart; dirParts)
-	{
-		if(dirPart.startsWith("."))
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 enum MultiLineCommentType
 {
 	None,
