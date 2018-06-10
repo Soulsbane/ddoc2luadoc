@@ -36,14 +36,23 @@ MultiLineCommentType isMultiLineComment(const string line)
 
 	return MultiLineCommentType.None;
 }
+
 /**
-	Creates a todo file using the fileExt parameter in the filename.
-	@param fileExt The file extension to use for the todo file.
-	@return A file handle to the created todo file and the constructed todo filename string.
+	Just a comment block for testing.
+
+	Params:
+		foo = this is some bar text.
+
+	Returns:
+		This can't return anything.
 */
 struct Scanner
 {
-	void parseLine(const string line){}
+	void parseLine(const string line)
+	{
+
+	}
+
 	void scanFile(const DirEntry entry)
 	{
 		immutable string fileExtension = entry.name.baseName.extension.removeChars(".");
@@ -59,7 +68,7 @@ struct Scanner
 
 			foreach(rawLine; lines)
 			{
-				immutable string line = rawLine.strip.chompPrefix("\t");
+				string line = rawLine.strip.chompPrefix("\t");
 
 				if(!line.empty)
 				{
@@ -76,14 +85,11 @@ struct Scanner
 							output.put("--]]\n");
 							inCommentBlock = false;
 						}
-
-						if(commentType == MultiLineCommentType.OpenAndClose)
-						{
-						}
 					}
 					else if(inCommentBlock)
 					{
 						parseLine(line);
+						output.put(line ~= "\n");
 					}
 					else
 					{
