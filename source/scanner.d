@@ -50,6 +50,12 @@ MultiLineCommentType isMultiLineComment(const string line)
 */
 struct Scanner
 {
+
+	string createFuncStr(const string line)
+	{
+		return line;
+	}
+
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
 	void scanFile(const DirEntry entry)
 	{
@@ -82,6 +88,8 @@ struct Scanner
 						{
 							output.put("--]]\n");
 							inCommentBlock = false;
+							output.put(createFuncStr(lines[i + 1]));
+							output.put("\n");
 						}
 					}
 					else if(inCommentBlock)
