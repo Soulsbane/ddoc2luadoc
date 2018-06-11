@@ -62,7 +62,7 @@ struct Scanner
 			immutable auto lines = text.lineSplitter().array;
 			auto output = appender!string;
 
-			bool inCommentBlock, params, inFunctionDoc;
+			bool inCommentBlock, inParamsDoc, inFunctionDoc;
 
 			foreach(i, rawLine; lines)
 			{
@@ -88,14 +88,14 @@ struct Scanner
 					{
 						string description = lines[i];
 
-						if(!description.canFind(":") && !params && !inFunctionDoc)
+						if(!description.canFind(":") && !inParamsDoc && !inFunctionDoc)
 						{
 							output.put(description ~= "\n");
 						}
 
 						if(line.canFind("Params:"))
 						{
-							params = true;
+							inParamsDoc = true;
 						}
 
 						if(line.canFind("Return:"))
@@ -103,7 +103,7 @@ struct Scanner
 							inFunctionDoc = true;
 						}
 
-						if(params == true && !line.canFind("Returns:"))
+						if(inParamsDoc == true && !line.canFind("Returns:"))
 						{
 							if(!line.canFind("Params:"))
 							{
@@ -124,7 +124,7 @@ struct Scanner
 						if(line.canFind("Returns:"))
 						{
 							inFunctionDoc = true;
-							params = false;
+							inParamsDoc = false;
 						}
 					}
 					else
