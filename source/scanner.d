@@ -107,9 +107,7 @@ struct Scanner
 						{
 							if(!line.canFind("Params:"))
 							{
-								string tempLine = line;
-								string finalParamStr = "@param " ~ tempLine ~ "\n";
-								//output.put(line ~= "\n");
+								string finalParamStr = "@param " ~ line ~ "\n";
 								output.put(finalParamStr);
 							}
 						}
@@ -118,9 +116,7 @@ struct Scanner
 						{
 							if(!line.canFind("Params:"))
 							{
-								immutable string tempLine = line;
-								string finalParamStr = "\t@return " ~ tempLine ~ "\n";
-
+								string finalParamStr = "\t@return " ~ line ~ "\n";
 								output.put(finalParamStr);
 							}
 						}
