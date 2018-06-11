@@ -39,20 +39,18 @@ MultiLineCommentType isMultiLineComment(const string line)
 
 /**
 	Just a comment block for testing.
+	This is some continued text
 
 	Params:
 		foo = this is some bar text.
+		bar = this is some foo text.
 
 	Returns:
 		This can't return anything.
 */
 struct Scanner
 {
-	void parseLine(const string line)
-	{
-
-	}
-
+	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
 	void scanFile(const DirEntry entry)
 	{
 		immutable string fileExtension = entry.name.baseName.extension.removeChars(".");
@@ -64,9 +62,9 @@ struct Scanner
 			immutable auto lines = text.lineSplitter().array;
 			auto output = appender!string;
 
-			bool inCommentBlock;
+			bool inCommentBlock, params;
 
-			foreach(rawLine; lines)
+			foreach(i, rawLine; lines)
 			{
 				string line = rawLine.strip.chompPrefix("\t");
 
@@ -88,8 +86,33 @@ struct Scanner
 					}
 					else if(inCommentBlock)
 					{
-						parseLine(line);
-						output.put(line ~= "\n");
+						string description = lines[i];
+
+						if(!description.canFind(":"))
+						{
+							output.put(description ~= "\n");
+						}
+
+						if(line.canFind("Params:"))
+						{
+							params = true;
+						}
+
+						if(params == true && !line.canFind("Returns:"))
+						{
+							if(!line.canFind("Params:"))
+							{
+								string tempLine = line;
+								string finalParamStr = "@param " ~ tempLine ~ "\n";
+								//output.put(line ~= "\n");
+								output.put(finalParamStr);
+							}
+						}
+
+						if(line.canFind("Returns:"))
+						{
+							params = false;
+						}
 					}
 					else
 					{
