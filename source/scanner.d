@@ -107,7 +107,7 @@ struct Scanner
 						{
 							if(!line.canFind("Params:"))
 							{
-								string finalParamStr = "@param " ~ line ~ "\n";
+								string finalParamStr = "\t@param " ~ line ~ "\n";
 								output.put(finalParamStr);
 							}
 						}
