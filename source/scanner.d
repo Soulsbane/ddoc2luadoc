@@ -103,7 +103,7 @@ struct Scanner
 							inFunctionDoc = true;
 						}
 
-						if(inParamsDoc == true && !line.canFind("Returns:"))
+						if(inParamsDoc && !line.canFind("Returns:"))
 						{
 							if(!line.canFind("Params:"))
 							{
