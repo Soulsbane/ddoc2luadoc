@@ -122,7 +122,7 @@ struct Scanner
 
 						if(inFunctionDoc && !line.canFind("Params:"))
 						{
-							if(!line.canFind("Params:"))
+							if(!line.canFind("Returns:"))
 							{
 								string finalParamStr = "\t@return " ~ line ~ "\n";
 								output.put(finalParamStr);
