@@ -3,6 +3,7 @@ module scanner;
 import std.algorithm, std.path, std.file;
 import std.stdio, std.exception, std.array;
 import std.utf, std.stdio, std.string;
+import std.regex, std.uni, std.conv;
 
 import dstringutils;
 
@@ -48,12 +49,43 @@ MultiLineCommentType isMultiLineComment(const string line)
 	Returns:
 		This can't return anything.
 */
+string testFunc(string foo, string bar)
+{
+	return string.init;
+}
+
 struct Scanner
 {
 
 	string createFuncStr(const string line)
 	{
-		return line;
+		auto r = regex(r"(\w+)[(](.*)[)]");
+		auto output = appender!string;
+
+		auto matches = matchFirst(line, r);
+		immutable string funcName = matches[1];
+		immutable string funcArgs = matches[2];
+		immutable string funcNameCapitalized = funcName[0].toUpper.to!string ~ funcName[1..$];
+		auto funcArgsSplit = funcArgs.splitter(",");
+		string argNameTemp;
+
+
+		output.put("function ");
+		output.put(funcNameCapitalized);
+		output.put("(");
+
+		foreach(arg; funcArgsSplit)
+		{
+			auto argSplit = arg.splitter(" ").array;
+			string argName = argSplit[argSplit.length - 1] ~ ", ";
+
+			argNameTemp ~= argName;
+		}
+
+		output.put(argNameTemp[0..$ - 2]);
+		output.put(")\nend");
+
+		return output.data;
 	}
 
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
