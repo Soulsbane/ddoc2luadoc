@@ -154,7 +154,7 @@ struct Scanner
 							}
 						}
 
-						if(inFunctionDoc && !line.canFind("Params:"))
+						if(inFunctionDoc && !line.canFind("Params:") && !inParamsDoc)
 						{
 							if(!line.canFind("Returns:"))
 							{
