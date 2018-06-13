@@ -82,7 +82,11 @@ struct Scanner
 			argNameTemp ~= argName;
 		}
 
-		output.put(argNameTemp[0..$ - 2]);
+		if(argNameTemp.length > 0)
+		{
+			output.put(argNameTemp[0..$ - 2]); //FIXME: Doesn't take no arguments or one into account.
+		}
+
 		output.put(")\nend");
 
 		return output.data;
