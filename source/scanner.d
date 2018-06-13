@@ -5,8 +5,6 @@ import std.stdio, std.exception, std.array;
 import std.utf, std.stdio, std.string;
 import std.regex, std.uni, std.conv;
 
-import dstringutils;
-
 enum MultiLineCommentType
 {
 	None,
@@ -95,9 +93,9 @@ struct Scanner
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
 	void scanFile(const DirEntry entry)
 	{
-		immutable string fileExtension = entry.name.baseName.extension.removeChars(".");
+		immutable string fileExtension = entry.name.baseName.extension;
 
-		if(fileExtension == "d")
+		if(fileExtension == ".d")
 		{
 			immutable string name = buildNormalizedPath(entry.name);
 			immutable string text = readText(name).ifThrown!UTFException("");
