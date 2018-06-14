@@ -13,7 +13,7 @@ enum MultiLineCommentType
 	OpenAndClose
 }
 
-MultiLineCommentType isMultiLineComment(const string line)
+MultiLineCommentType isMultiLineComment(const string line) nothrow pure @safe
 {
 	immutable string commentOpen = "/*";
 	immutable string commentClose = "*/";
@@ -55,7 +55,7 @@ string testFunc(string foo, string bar)
 struct Scanner
 {
 
-	string createFuncStr(const string line)
+	string createFuncStr(const string line) const @safe
 	{
 		auto r = regex(r"(\w+)[(](.*)[)]");
 		auto output = appender!string;
@@ -90,14 +90,14 @@ struct Scanner
 		return output.data;
 	}
 
-	string createParamStr(const string line)
+	string createParamStr(const string line) const nothrow pure @safe
 	{
 		string finalParamStr = "\t@return " ~ line ~ "\n";
 		return finalParamStr;
 	}
 
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
-	void scanFile(const DirEntry entry)
+	void scanFile(const DirEntry entry) @safe
 	{
 		immutable string fileExtension = entry.name.baseName.extension;
 
