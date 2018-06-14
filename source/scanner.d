@@ -90,6 +90,12 @@ struct Scanner
 		return output.data;
 	}
 
+	string createParamStr(const string line)
+	{
+		string finalParamStr = "\t@return " ~ line ~ "\n";
+		return finalParamStr;
+	}
+
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
 	void scanFile(const DirEntry entry)
 	{
@@ -158,8 +164,7 @@ struct Scanner
 						{
 							if(!line.canFind("Returns:"))
 							{
-								string finalParamStr = "\t@return " ~ line ~ "\n";
-								output.put(finalParamStr);
+								output.put(createParamStr(line));
 							}
 						}
 
