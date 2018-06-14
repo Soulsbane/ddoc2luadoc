@@ -90,14 +90,21 @@ struct Scanner
 		return output.data;
 	}
 
-	string createParamStr(const string line) const nothrow pure @safe
+	string createParamStr(const string line) const pure @safe
 	{
-		string finalParamStr = "\t@return " ~ line ~ "\n";
-		return finalParamStr;
+		string resultStr = "\t@param ";
+
+		if(line.canFind("="))
+		{
+			auto argSplit = line.splitter("=").array;
+			resultStr ~= argSplit[0].strip ~ argSplit[1] ~ "\n";
+		}
+
+		return resultStr;
 	}
 
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
-	void scanFile(const DirEntry entry) @safe
+	void scanFile(const DirEntry entry) //@safe
 	{
 		immutable string fileExtension = entry.name.baseName.extension;
 
@@ -155,8 +162,7 @@ struct Scanner
 						{
 							if(!line.canFind("Params:"))
 							{
-								string finalParamStr = "\t@param " ~ line ~ "\n";
-								output.put(finalParamStr);
+								output.put(createParamStr(line));
 							}
 						}
 
@@ -164,7 +170,8 @@ struct Scanner
 						{
 							if(!line.canFind("Returns:"))
 							{
-								output.put(createParamStr(line));
+								string finalParamStr = "\t@return " ~ line ~ "\n";
+								output.put(finalParamStr);
 							}
 						}
 
