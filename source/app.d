@@ -5,7 +5,7 @@ import scanner;
 
 void main(string[] args)
 {
-	string[] arguments = args[1..$];
+	const string[] arguments = args[1..$];
 	Scanner scanner;
 
 	if(arguments.length == 0)
