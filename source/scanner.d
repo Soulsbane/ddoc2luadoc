@@ -103,17 +103,33 @@ struct Scanner
 		return resultStr;
 	}
 
+	void scanFile(const string inputFileName, const string outputFileName)
+	{
+		auto entry = DirEntry(inputFileName);
+		immutable string results = scanFile(entry);
+
+		if(outputFileName.extension != ".d") // Mistakes happen don't accidently overwrite the .d file.
+		{
+			auto handle = File(outputFileName, "w+");
+			handle.writeln(results);
+		}
+		else
+		{
+			writeln("Command failed due to output filename ending in a .d file extension");
+		}
+	}
+
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
-	void scanFile(const DirEntry entry) //@safe
+	string scanFile(const DirEntry entry) //@safe
 	{
 		immutable string fileExtension = entry.name.baseName.extension;
+		auto output = appender!string;
 
 		if(fileExtension == ".d")
 		{
 			immutable string name = buildNormalizedPath(entry.name);
 			immutable string text = readText(name).ifThrown!UTFException("");
 			immutable auto lines = text.lineSplitter().array;
-			auto output = appender!string;
 
 			bool inCommentBlock, inParamsDoc, inFunctionDoc;
 
@@ -186,14 +202,14 @@ struct Scanner
 					}
 				}
 			}
-			writeln(output.data);
 		}
 
+		return output.data;
 	}
 
 	void scanFiles(const string pattern = "*.d")
 	{
 		getcwd.dirEntries(pattern, SpanMode.depth)
-			.each!(entry => scanFile(entry));
+			.each!(entry => writeln(scanFile(entry)));
 	}
 }

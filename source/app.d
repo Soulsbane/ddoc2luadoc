@@ -19,12 +19,16 @@ void main(string[] args)
 	}
 	else if(arguments.length == 2)
 	{
-		immutable string input;
-		immutable string output;
+		immutable string input = arguments[0];
+		immutable string output = arguments[1];
 
 		if(input.exists)
 		{
-			scanner.scanFiles();
+			scanner.scanFile(input, output);
+		}
+		else
+		{
+			writeln("Command failed because ", input, " does not exist!");
 		}
 	}
 	else
