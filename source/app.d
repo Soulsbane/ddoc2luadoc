@@ -14,7 +14,7 @@ void main(string[] args)
 	}
 	else if(arguments.length == 1)
 	{
-		immutable string pattern = "*.d";
+		immutable string pattern = arguments[0];
 		scanner.scanFiles(pattern);
 	}
 	else if(arguments.length == 2)

@@ -193,7 +193,7 @@ struct Scanner
 
 	void scanFiles(const string pattern = "*.d")
 	{
-		getcwd.dirEntries("*.d", SpanMode.depth)
+		getcwd.dirEntries(pattern, SpanMode.depth)
 			.each!(entry => scanFile(entry));
 	}
 }
