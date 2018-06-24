@@ -36,6 +36,18 @@ MultiLineCommentType isMultiLineComment(const string line) nothrow pure @safe
 	return MultiLineCommentType.None;
 }
 
+
+
+/**
+	Initialize the paths with addonName
+
+	Params:
+		addonName = Name of the addon.
+*/
+void create(const string addonName)
+{
+}
+
 /**
 	Just a comment block for testing.
 	This is some continued text
@@ -112,6 +124,7 @@ struct Scanner
 		{
 			auto handle = File(outputFileName, "w+");
 			handle.writeln(results);
+			//writeln(results);
 		}
 		else
 		{
@@ -169,7 +182,7 @@ struct Scanner
 							inParamsDoc = true;
 						}
 
-						if(line.canFind("Return:"))
+						if(line.canFind("Returns:"))
 						{
 							inFunctionDoc = true;
 						}
@@ -178,6 +191,7 @@ struct Scanner
 						{
 							if(!line.canFind("Params:"))
 							{
+								//FIXME: Multiple @params are placed on the same parameter line.
 								output.put(createParamStr(line));
 							}
 						}
