@@ -104,15 +104,16 @@ struct Scanner
 
 	string createParamStr(const string line) const pure @safe
 	{
-		string resultStr = "\t@param ";
 
 		if(line.canFind("="))
 		{
 			auto argSplit = line.splitter("=").array;
-			resultStr ~= argSplit[0].strip ~ argSplit[1] ~ "\n";
+			immutable string resultStr = "\t@param " ~ argSplit[0].strip ~ argSplit[1] ~ "\n";
+
+			return resultStr;
 		}
 
-		return resultStr;
+		return string.init;
 	}
 
 	void scanFile(const string inputFileName, const string outputFileName)
@@ -192,7 +193,12 @@ struct Scanner
 							if(!line.canFind("Params:"))
 							{
 								//FIXME: Multiple @params are placed on the same parameter line.
-								output.put(createParamStr(line));
+								immutable string value = createParamStr(line);
+
+								if(value != string.init)
+								{
+									output.put(createParamStr(line));
+								}
 							}
 						}
 
