@@ -36,8 +36,6 @@ MultiLineCommentType isMultiLineComment(const string line) nothrow pure @safe
 	return MultiLineCommentType.None;
 }
 
-
-
 /**
 	Initialize the paths with addonName
 
