@@ -116,7 +116,7 @@ struct Scanner
 		return string.init;
 	}
 
-	void scanFile(const string inputFileName, const string outputFileName)
+	void scanFile(const string inputFileName, const string outputFileName) @safe
 	{
 		auto entry = DirEntry(inputFileName);
 		immutable string results = scanFile(entry);
@@ -134,7 +134,7 @@ struct Scanner
 	}
 
 	// This is a very naive algorithm that is hard coded in some areas but works for my particular commenting style.
-	string scanFile(const DirEntry entry) //@safe
+	string scanFile(const DirEntry entry) @safe
 	{
 		immutable string fileExtension = entry.name.baseName.extension;
 		auto output = appender!string;
