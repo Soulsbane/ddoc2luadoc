@@ -165,6 +165,8 @@ struct Scanner
 						{
 							output.put("--]]\n");
 							inCommentBlock = false;
+							inParamsDoc = false;
+							inFunctionDoc = false;
 							output.put(createFuncStr(lines[i + 1]));
 							output.put("\n");
 						}
