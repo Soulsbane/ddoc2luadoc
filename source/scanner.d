@@ -65,7 +65,7 @@ string testFunc(string foo, string bar)
 struct Scanner
 {
 
-	string createFuncStr(const string line) const @safe
+	private string createFuncStr(const string line) const @safe
 	{
 		auto r = regex(r"(\w+)[(](.*)[)]");
 		auto output = appender!string;
@@ -100,7 +100,7 @@ struct Scanner
 		return output.data;
 	}
 
-	string createParamStr(const string line) const pure @safe
+	private string createParamStr(const string line) const pure @safe
 	{
 
 		if(line.canFind("="))
