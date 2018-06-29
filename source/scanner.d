@@ -85,7 +85,7 @@ struct Scanner
 		foreach(arg; funcArgsSplit)
 		{
 			auto argSplit = arg.splitter(" ").array;
-			string argName = argSplit[argSplit.length - 1] ~ ", ";
+			immutable string argName = argSplit[argSplit.length - 1] ~ ", ";
 
 			argNameTemp ~= argName;
 		}
@@ -105,7 +105,7 @@ struct Scanner
 
 		if(line.canFind("="))
 		{
-			auto argSplit = line.splitter("=").array;
+			immutable auto argSplit = line.splitter("=").array;
 			immutable string resultStr = "\t@param " ~ argSplit[0].strip ~ argSplit[1] ~ "\n";
 
 			return resultStr;
@@ -147,7 +147,7 @@ struct Scanner
 
 			foreach(i, rawLine; lines)
 			{
-				string line = rawLine.strip.chompPrefix("\t");
+				immutable string line = rawLine.strip.chompPrefix("\t");
 
 				if(!line.empty)
 				{
@@ -206,7 +206,7 @@ struct Scanner
 						{
 							if(!line.canFind("Returns:"))
 							{
-								string finalParamStr = "\t@return " ~ line ~ "\n";
+								immutable string finalParamStr = "\t@return " ~ line ~ "\n";
 								output.put(finalParamStr);
 							}
 						}
