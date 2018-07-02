@@ -192,7 +192,6 @@ struct Scanner
 						{
 							if(!line.canFind("Params:"))
 							{
-								//FIXME: Multiple @params are placed on the same parameter line.
 								immutable string value = createParamStr(line);
 
 								if(value != string.init)
